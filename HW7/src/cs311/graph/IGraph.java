@@ -9,62 +9,62 @@ public interface IGraph<V, E>
      * Set the graph to be a directed graph.  Edge (x, y) is different than edge (y, x)
      */
     public void setDirectedGraph();
-    
-    
+
+
     /**
      * Set the graph to be an undirected graph.  Edge (x, y) is in the graph
      * if and only if edge (y, x) is in the graph.  Note that when implementing this
-     * and there are already edges defined in the graph, care must be taken to 
+     * and there are already edges defined in the graph, care must be taken to
      * resolve conflicts and inconsistencies in the overall implementation.
      */
     public void setUndirectedGraph();
-    
-    
+
+
     /**
-     * 
+     *
      * @return true if the graph is directed.
      */
     public boolean isDirectedGraph();
-    
+
     /**
      * Adds a vertex to the graph with name given by the vertexName.  vertexNames,
      * must be unique in the graph.
-     * 
+     *
      * @param vertexName The unique name of the vertex.
-     * 
-     * @throws cs311.hw6.graph.IGraph.DuplicateVertexException 
+     *
+     * @throws cs311.hw6.graph.IGraph.DuplicateVertexException
      */
     public void addVertex( String vertexName ) throws DuplicateVertexException;
-    
-    
+
+
     /**
      * Adds a vertex to the graph with name given by the vertexName.  vertexNames,
      * must be unique in the graph.  The vertexData of generic type is associated with
      * this vertex.
-     * 
+     *
      * @param vertexName
      * @param vertexData
-     * @throws cs311.hw6.graph.IGraph.DuplicateVertexException 
+     * @throws cs311.hw6.graph.IGraph.DuplicateVertexException
      */
     public void addVertex( String vertexName, V vertexData ) throws DuplicateVertexException;
-    
-    
+
+
     /**
-     * Adds an edge to the graph by specifying the two vertices that comprise the 
+     * Adds an edge to the graph by specifying the two vertices that comprise the
      * edge.  If the graph is undirected then edge (x, y) or edge (y, x) may be used
      * to add the single edge.  If the graph is undirected and edge (x,y) is added
-     * followed by a subsequent edge (y, x), the later add would throw a 
+     * followed by a subsequent edge (y, x), the later add would throw a
      * DuplicateEdgeException.
-     * 
+     *
      * @param vertex1 The first vertex in the edge.
      * @param vertex2 The second vertex in the edge.
-     * 
+     *
      * @throws cs311.hw6.graph.IGraph.DuplicateEdgeException
-     * @throws cs311.hw6.graph.IGraph.NoSuchVertexException 
+     * @throws cs311.hw6.graph.IGraph.NoSuchVertexException
      */
     public void addEdge( String vertex1, String vertex2 ) throws DuplicateEdgeException, NoSuchVertexException;
-    
-    
+
+
     /**
      * Adds an edge to the graph by specifying the two vertices that comprise the 
      * edge.  If the graph is undirected then edge (x, y) or edge (y, x) may be used
@@ -300,7 +300,7 @@ public interface IGraph<V, E>
         }
     }
     
-    // Exceptions used i nthe interface.
+    // Exceptions used in the interface.
     
     public final static class DuplicateVertexException extends RuntimeException
     {
