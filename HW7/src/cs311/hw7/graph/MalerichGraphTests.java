@@ -1,7 +1,5 @@
 package cs311.hw7.graph;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
