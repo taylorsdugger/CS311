@@ -7,8 +7,6 @@ public class Tuple {
     int key;
     double value;
 
-    private Tuple tuple;
-
     /**
      * Creates Tuple Object with keyP and valueP
      * @param keyP the key
@@ -16,7 +14,8 @@ public class Tuple {
      */
     public Tuple(int keyP, float valueP){
 
-        tuple = new Tuple(keyP, valueP);
+        this.key = keyP;
+        this.value = valueP;
     }
 
     /**

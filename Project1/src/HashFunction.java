@@ -28,7 +28,7 @@ public class HashFunction {
         }
 
         //set p to our prime
-        this.p=val;
+        this.p = val;
 
         //Finds a random number
         Random random = new Random();
@@ -47,7 +47,7 @@ public class HashFunction {
      * @param x value of hash on this
      * @return (ax + b)%p
      */
-    public double hash(int x){
+    public int hash(int x){
 
         return (this.a * x + this.b) % this.p;
     }
@@ -133,13 +133,5 @@ public class HashFunction {
         }
         return true;
     }
-
-
-public static void main(String args[]){
-    HashFunction h = new HashFunction(5);
-
-    h.setP(337);
-    System.out.print(h.getP());
-}
 
 }

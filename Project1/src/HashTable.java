@@ -1,3 +1,5 @@
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -5,6 +7,13 @@ import java.util.List;
  */
 public class HashTable {
 
+    private HashFunction hf;
+    private int p = 0;
+    private LinkedList<Tuple>[] arr;
+
+    public static void main(String args[]){
+        HashTable h = new HashTable(10);
+    }
     /**
      * HashTable(int size) Finds the smallest prime integer p whose value is at least size. Creates
      * a hash table of size p where each cell initially is NULL. It will determine the hash function to be
@@ -14,7 +23,27 @@ public class HashTable {
      */
     public HashTable(int size){
 
+        while (true){
+            if(isPrime(size)) {
+                break;
+            }else{
+                size++;
+            }
+        }
 
+        //Sets p to prime
+        p = size;
+
+        //Creates our array of linked lists
+        arr = new LinkedList[p];
+
+        //initializes it
+        for(int i = 0; i < p; i++){
+            arr[i] = new LinkedList<>();
+        }
+
+        //new hashFunction
+        hf = new HashFunction(p);
     }
 
     /**
@@ -24,7 +53,13 @@ public class HashTable {
      */
     public int maxLoad(){
 
-        return 0;
+        int max = 0;
+
+        for(int i = 0; i < p; i++){
+            max += this.arr[i].size();
+        }
+
+        return max;
     }
 
     /**
@@ -44,17 +79,25 @@ public class HashTable {
      */
     public int size(){
 
-        return 0;
+        return p;
     }
 
     /**
      * Returns the number of Tuples that are currently stored in the hash table.
      *
-     * @return number of tuples stored
+     * @return num number of tuples stored
      */
     public int numElements(){
 
-        return 0;
+        int num = 0;
+
+        for(int i = 0; i < p; i ++){
+            if(this.arr[i] != null){
+                num+= arr[i].size();
+            }
+        }
+
+        return num;
     }
 
     /**
@@ -64,7 +107,7 @@ public class HashTable {
      */
     public int loadFactor(){
 
-        return 0;
+        return numElements()/size();
     }
 
     /**
@@ -78,6 +121,26 @@ public class HashTable {
      */
     public void add(Tuple t){
 
+        this.arr[hf.hash(t.getKey())].add(t);
+
+        if(loadFactor() > 0.7){
+
+            LinkedList<Tuple>[] newarr = new LinkedList[p];
+
+            //initialize the new table
+            for(int i = 0; i < p*2; i++){
+                newarr[i] = new LinkedList<>();
+            }
+
+            //now copy over
+            for(int j = 0; j < p; j++){
+                newarr[j] = arr[j];
+            }
+
+            arr = newarr;
+            p = p*2;
+            hf = new HashFunction(p);
+        }
 
     }
 
@@ -101,5 +164,21 @@ public class HashTable {
     public void remove(Tuple t){
 
 
+    }
+
+    /**
+     * Helper to see if its a prime
+     *
+     * @param x the num to check
+     * @return true if its a prime
+     */
+    private boolean isPrime(int x){
+        if (x % 2 ==0) return false;
+
+        for(int i = 3; i*i <= x; i+=2) {
+            if(x % i == 0)
+                return false;
+        }
+        return true;
     }
 }
