@@ -1,14 +1,24 @@
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by taylorsdugger on 2/16/17.
  */
 public class HashTable {
 
+    /**
+     * The hashfunction used
+     */
     private HashFunction hf;
+
+    /**
+     * size p
+     */
     private int p = 0;
+
+    /**
+     * The arrayList
+     */
     private LinkedList<Tuple>[] arr;
 
     public static void main(String args[]){
@@ -56,7 +66,9 @@ public class HashTable {
         int max = 0;
 
         for(int i = 0; i < p; i++){
-            max += this.arr[i].size();
+            //look for a bigger list
+            if(this.arr[i].size() > max)
+                max = this.arr[i].size();
         }
 
         return max;
@@ -69,7 +81,21 @@ public class HashTable {
      */
     public int averageLoad(){
 
-        return 0;
+        int sum = 0;
+        int s;
+        int nonNull = 0;
+
+        for(int i = 0; i < p; i++){
+            s = this.arr[i].size();
+            //if it contains something then
+           if(s > 0) {
+               sum += s; //sum the total up
+               nonNull++; //and add one to the nonNull Cell list
+           }
+
+        }
+
+        return sum/nonNull;
     }
 
     /**
@@ -105,9 +131,11 @@ public class HashTable {
      *
      * @return load factor
      */
-    public int loadFactor(){
+    public double loadFactor(){
 
-        return numElements()/size();
+        double n = this.numElements();
+        double s = this.size();
+        return n/s;
     }
 
     /**
@@ -121,11 +149,12 @@ public class HashTable {
      */
     public void add(Tuple t){
 
-        this.arr[hf.hash(t.getKey())].add(t);
+        int hh = hf.hash(t.getKey());
+        this.arr[hh].add(t);
 
         if(loadFactor() > 0.7){
 
-            LinkedList<Tuple>[] newarr = new LinkedList[p];
+            LinkedList<Tuple>[] newarr = new LinkedList[p*2];
 
             //initialize the new table
             for(int i = 0; i < p*2; i++){
@@ -139,7 +168,7 @@ public class HashTable {
 
             arr = newarr;
             p = p*2;
-            hf = new HashFunction(p);
+            //hf = new HashFunction(p);
         }
 
     }
@@ -151,9 +180,20 @@ public class HashTable {
      * @param k Key to look for
      * @return Array List of Tuples
      */
-    public List<Tuple> search(int k){
+    public ArrayList<Tuple> search(int k){
 
-        return null;
+        ArrayList<Tuple> list = new ArrayList<>();
+        LinkedList<Tuple> temp;
+
+        //get list from the array
+        temp = this.arr[hf.hash(k)];
+
+        //Get an ArrayList of the elements in my linked list at the key
+        for(int i = 0; i < temp.size(); i++){
+            list.add(temp.get(i));
+        }
+
+        return list;
     }
 
     /**
@@ -163,6 +203,21 @@ public class HashTable {
      */
     public void remove(Tuple t){
 
+        LinkedList<Tuple> temp;
+        int hashy = hf.hash(t.getKey());//gets rid of one calculation...
+
+        //get list from the array
+        temp = this.arr[hashy];
+
+        //now look for the value and remove
+        for(int i = 0; i < temp.size(); i++){
+            if(temp.get(i).getValue() == (t.getValue())){
+                temp.remove(i);
+            }
+        }
+
+        //put it back in
+        this.arr[hashy] = temp;
 
     }
 
