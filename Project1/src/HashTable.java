@@ -9,7 +9,7 @@ public class HashTable {
     /**
      * The hashfunction used
      */
-    private HashFunction hf;
+    public HashFunction hf;
 
     /**
      * size p
@@ -149,7 +149,8 @@ public class HashTable {
      */
     public void add(Tuple t){
 
-        int hh = hf.hash(t.getKey());
+        int hh = Math.abs(hf.hash(t.getKey()));
+
         this.arr[hh].add(t);
 
         if(loadFactor() > 0.7){
@@ -168,7 +169,6 @@ public class HashTable {
 
             arr = newarr;
             p = p*2;
-            //hf = new HashFunction(p);
         }
 
     }
@@ -186,7 +186,7 @@ public class HashTable {
         LinkedList<Tuple> temp;
 
         //get list from the array
-        temp = this.arr[hf.hash(k)];
+        temp = this.arr[Math.abs(hf.hash(k))];
 
         //Get an ArrayList of the elements in my linked list at the key
         for(int i = 0; i < temp.size(); i++){
@@ -216,7 +216,7 @@ public class HashTable {
             }
         }
 
-        //put it back in
+        //put the list back in
         this.arr[hashy] = temp;
 
     }

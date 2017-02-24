@@ -4,7 +4,7 @@ import java.util.ArrayList;
 /**
  * Created by taylorsdugger on 2/22/17.
  */
-public class nearestPoints {
+public class NearestPoints {
 
     /**
      * ArrayList of points provided
@@ -22,7 +22,7 @@ public class nearestPoints {
      *
      * @param dataFile The absolute path of the file of points S
      */
-    public nearestPoints(String dataFile){
+    public NearestPoints(String dataFile){
 
         myPoints = new ArrayList<>();
 
@@ -38,6 +38,8 @@ public class nearestPoints {
             fileReader.close();
             bufferedReader.close();
 
+            buildDataStructure();
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -48,9 +50,11 @@ public class nearestPoints {
      *
      * @param pointSet Array list that contains set of points S
      */
-    public nearestPoints(ArrayList<Float> pointSet){
+    public NearestPoints(ArrayList<Float> pointSet){
 
         this.myPoints = pointSet;
+
+        //buildDataStructure();
     }
 
     /**
@@ -62,6 +66,8 @@ public class nearestPoints {
      */
     public ArrayList naiveNearestPoints(float p){
 
+        double curTime = System.currentTimeMillis();
+
         ArrayList closePoints = new ArrayList();
 
         for(int i = 0; i < myPoints.size(); i++){
@@ -71,6 +77,7 @@ public class nearestPoints {
             }
         }
 
+        //System.out.println("naiveNearestPoints Time: " + (System.currentTimeMillis() - curTime));
         return closePoints;
     }
 
@@ -81,18 +88,23 @@ public class nearestPoints {
      */
     public void buildDataStructure(){
 
+        double time = System.currentTimeMillis()/1000;
+
         //size m = 1.5n round up to int
         hashTable = new HashTable((int)Math.ceil(myPoints.size()*1.5));
+        Tuple t;
 
         for(int i = 0; i < myPoints.size(); i++){
-            float p = myPoints.get(i);
+            float p = (myPoints.get(i));
             //g(p) function
-            int g = (int)Math.floor(p);
+            int g = ((int)Math.floor(p));
             //make tuple
-            Tuple t = new Tuple(g,p);
+            t = new Tuple(g,p);
             //add tuple
             hashTable.add(t);
         }
+
+        System.out.println("buildDataStructure Time: " + ((System.currentTimeMillis()/1000) - time));
 
     }
 
@@ -108,10 +120,31 @@ public class nearestPoints {
     public ArrayList npHashNearestPoints(float p){
 
         buildDataStructure();
+        float curTime = System.currentTimeMillis();
 
-        
+        ArrayList closePoints = new ArrayList();
+        ArrayList<Tuple> bucket;
 
-        return null;
+        int g = (int)Math.floor(p);//g(p)
+        //now hash g(p)
+        //int hfOfp= hashTable.hf.hash(g);
+
+        //Now go through buckets before, at, and after h(g(p))
+        for(int j = Math.abs(g-1); j <= g + 1; j++){
+            bucket = hashTable.search(j);
+
+            //go through each bucket to check each value in it
+            for(int k = 0; k < bucket.size(); k++){
+                float q = (float)bucket.get(k).getValue();
+
+                if(Math.abs(p - q) <= 1)
+                    closePoints.add(q);
+
+            }
+        }
+
+        System.out.println("npHashNearestPoints Time: " + ((System.currentTimeMillis()) - curTime));
+        return closePoints;
     }
 
     /**
@@ -122,6 +155,8 @@ public class nearestPoints {
     public void allNearestPointsNaive(){
 
         try {
+            double curTime = (float)System.currentTimeMillis()/1000;
+
             PrintWriter writer = new PrintWriter("NaiveSolution.txt", "UTF-8");
             String out;
 
@@ -134,6 +169,7 @@ public class nearestPoints {
                 out = "";
             }
 
+            System.out.println("allNearestPointsNaive Time: " + (float)(System.currentTimeMillis()/1000 - curTime));
             writer.close();
 
         }catch (IOException e){
@@ -149,6 +185,29 @@ public class nearestPoints {
      * otherwise you will receive zero credit.
      */
     public void allNearestPointsHash(){
+
+        try {
+            buildDataStructure();
+            double curTime = (float)System.currentTimeMillis();
+
+            PrintWriter writer = new PrintWriter("HashSolution.txt", "UTF-8");
+            String out;
+
+            for (int i = 0; i < myPoints.size(); i++) {
+                float q = myPoints.get(i);
+                out = npHashNearestPoints(q).toString().replace(",","").replace("[","")
+                        .replace("]","").trim();
+
+                writer.println(q + " " + out);
+                out = "";
+            }
+
+            System.out.println("allNearestPointsHash Time: " + (float)((System.currentTimeMillis()) - curTime));
+            writer.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 
