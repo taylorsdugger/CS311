@@ -43,14 +43,14 @@ public class Test {
         System.out.println("Search for key 6 value 9: " + h.search(6).get(0).getValue());
         System.out.println("Search for key 5 value 6,7: " + h.search(5).get(0).getValue() + h.search(5).get(1).getValue());
 */
-        //NearestPoints n = new NearestPoints("/home/taylorsdugger/Programming/311/Project1/points.txt");
-        //System.out.println(n.npHashNearestPoints((2820.1f)).toString());
+        NearestPoints n = new NearestPoints("/home/taylorsdugger/Programming/311/Project1/points.txt");
+        System.out.println(n.npHashNearestPoints((2820.1f)).toString());
         //n.allNearestPointsHash();
         //System.out.println(n.naiveNearestPoints(52295.2f).toString());
         //n.allNearestPointsNaive();
 
-        RecSys r = new RecSys("/home/taylorsdugger/Programming/311/Project1/recPoints.txt");
-        System.out.println(r.ratingOf(2,1));
+        //RecSys r = new RecSys("/home/taylorsdugger/Programming/311/Project1/recPoints.txt");
+        //System.out.println("Predicted Rating: " + r.ratingOf(4,3));
 
     }
 }

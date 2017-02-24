@@ -19,11 +19,11 @@ public class HashTable {
     /**
      * The arrayList
      */
-    private LinkedList<Tuple>[] arr;
+    private ArrayList<Tuple>[] arr;
 
-    public static void main(String args[]){
+/*    public static void main(String args[]){
         HashTable h = new HashTable(10);
-    }
+    }*/
     /**
      * HashTable(int size) Finds the smallest prime integer p whose value is at least size. Creates
      * a hash table of size p where each cell initially is NULL. It will determine the hash function to be
@@ -45,11 +45,11 @@ public class HashTable {
         p = size;
 
         //Creates our array of linked lists
-        arr = new LinkedList[p];
+        arr = new ArrayList[p];
 
         //initializes it
         for(int i = 0; i < p; i++){
-            arr[i] = new LinkedList<>();
+            arr[i] = new ArrayList<>();
         }
 
         //new hashFunction
@@ -155,9 +155,14 @@ public class HashTable {
 
         if(loadFactor() > 0.7){
 
-            LinkedList<Tuple>[] newarr = new LinkedList[p*2];
 
-            //initialize the new table
+
+
+            //LinkedList<Tuple>[] newarr = new LinkedList[p*2];
+
+            HashTable h = new HashTable(p*2);
+
+            /*//initialize the new table
             for(int i = 0; i < p*2; i++){
                 newarr[i] = new LinkedList<>();
             }
@@ -168,7 +173,7 @@ public class HashTable {
             }
 
             arr = newarr;
-            p = p*2;
+            p = p*2;*/
         }
 
     }
@@ -183,7 +188,7 @@ public class HashTable {
     public ArrayList<Tuple> search(int k){
 
         ArrayList<Tuple> list = new ArrayList<>();
-        LinkedList<Tuple> temp;
+        ArrayList<Tuple> temp;
 
         //get list from the array
         temp = this.arr[Math.abs(hf.hash(k))];
@@ -203,7 +208,7 @@ public class HashTable {
      */
     public void remove(Tuple t){
 
-        LinkedList<Tuple> temp;
+        ArrayList<Tuple> temp;
         int hashy = hf.hash(t.getKey());//gets rid of one calculation...
 
         //get list from the array
