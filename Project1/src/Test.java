@@ -4,9 +4,10 @@
  */
 public class Test {
 
-    public static void main(String args[]){
 
-        /*Tuple t = new Tuple(1,1);
+    public static void main(String[] args){
+
+     /*   Tuple t = new Tuple(1,1);
         Tuple t2 = new Tuple(2,2);
         Tuple t3 = new Tuple(3,3);
         Tuple t4 = new Tuple(3,4);
@@ -32,7 +33,7 @@ public class Test {
         h.add(t9);
 
         System.out.println("Search for t8 value 8 " + h.search(5).get(2).getValue());
-        h.remove(t8);
+        //h.remove(t8);
         System.out.println("Search for t8 value 8 " + h.search(5));
 
         System.out.println("Load factor: " + h.loadFactor());
@@ -41,16 +42,18 @@ public class Test {
         System.out.println("Average Load: " + h.averageLoad());
         System.out.println("Max Load: " + h.maxLoad());
         System.out.println("Search for key 6 value 9: " + h.search(6).get(0).getValue());
-        System.out.println("Search for key 5 value 6,7: " + h.search(5).get(0).getValue() + h.search(5).get(1).getValue());
+        System.out.println("Search for key 5 value 6,7: " + h.search(5).get(0).getValue() + " " +h.search(5).get(1).getValue());
 */
-        NearestPoints n = new NearestPoints("/home/taylorsdugger/Programming/311/Project1/points.txt");
-        System.out.println(n.npHashNearestPoints((2820.1f)).toString());
+        double curTime = System.currentTimeMillis()/1000;
+        NearestPoints n = new NearestPoints("T:\\Programming\\CS311\\Project1\\points.txt");
+        //System.out.println(n.npHashNearestPoints((2820.1f)).toString());
         //n.allNearestPointsHash();
+        n.allNearestPointsNaive();
+        System.out.println(" Time: " + (System.currentTimeMillis()/1000 - curTime));
         //System.out.println(n.naiveNearestPoints(52295.2f).toString());
-        //n.allNearestPointsNaive();
 
-        //RecSys r = new RecSys("/home/taylorsdugger/Programming/311/Project1/recPoints.txt");
-        //System.out.println("Predicted Rating: " + r.ratingOf(4,3));
+        //RecSys r = new RecSys("T:\\Programming\\CS311\\Project1\\recPoints.txt");
+        //System.out.println("Predicted Rating: " + r.ratingOf(2,1));
 
     }
 }
