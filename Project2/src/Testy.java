@@ -35,5 +35,11 @@ public class Testy {
 
         GraphProcessor p = new GraphProcessor("/home/taylor/Programming/CS311/Project2/graphTest.txt");
 
+        System.out.println(p.sameComponent("B", "A"));
+
+        ArrayList<String> a = p.componentVertices("A");
+        System.out.println(a.toString());
+
+        //System.out.println(p.outDegree(null));
     }
 }

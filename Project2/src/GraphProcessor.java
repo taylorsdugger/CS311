@@ -28,7 +28,7 @@ public class GraphProcessor {
     /**
      *
      */
-    private ArrayList<ArrayList<String>> allSCCs;
+    private ArrayList<String> allSCCs;
 
     /**
      *
@@ -102,22 +102,38 @@ public class GraphProcessor {
     }
 
     /**
+     * The out degree of v.
      *
      * @param v Vertex v
      * @return out degree of v
      */
     public int outDegree(String v){
 
-        return 0;
+        if(!graph.containsKey(v.hashCode()) || v.equals(null))
+            return 0;
+
+        return graph.get(v.hashCode()).getEdges().size();
     }
 
     /**
+     * Returns true if u and v belong to the same SCC; otherwise
+     * returns false.
      *
      * @param u Vertex u
      * @param v Vertex v
      * @return true if u and v belond to same SCC
      */
     public boolean sameComponent(String u, String v){
+
+        if(u == null || v == null || u.equals("") || v.equals(""))
+            return false;
+
+        for (String scc: allSCCs) {
+            if(scc.contains(u)){
+                if(scc.contains(v))
+                    return true;
+            }
+        }
 
         return false;
     }
@@ -130,7 +146,38 @@ public class GraphProcessor {
      */
     public ArrayList<String> componentVertices(String v){
 
-        return null;
+        ArrayList<String> componentVertice = new ArrayList<>();
+        int counter = -1;
+        boolean found = false;
+
+        //Make sure v is something
+        if(v.equals(null) || v.equals("")){
+            return componentVertice;
+        }
+
+        //go through the array of SCC's and see if v is in there
+        for (String scc: allSCCs) {
+            counter++;
+            if(scc.contains(v)){
+                found = true;
+                break;
+            }
+        }
+
+        //Didn't find v, so return an empty set (I guess I'm not sure what else to return)
+        if(!found){
+            return componentVertice;
+        }
+
+        //This is where we found v
+        String scc = allSCCs.get(counter);
+
+        //so now get each vertex and put it in our array list
+        for(int i = 0; i < scc.length(); i++){
+            componentVertice.add(Character.toString(scc.charAt(i)));
+        }
+
+        return componentVertice;
     }
 
     /**
@@ -174,6 +221,10 @@ public class GraphProcessor {
      *
      */
     private void SCC(){
+
+        //The result set of all the scc's
+        allSCCs = new ArrayList<>();
+
         //1) Input graph G
 
         //2) call computeOrder(g)
@@ -209,12 +260,16 @@ public class GraphProcessor {
                 //SccDFS()
                 SccDFS(curr.getVertex(), S);
 
+                String scc = "";
+
                 //Output S
                 for (String s: S.values()) {
-
+                    scc += s;
                 }
 
-                //These help keep track for the public methods
+                allSCCs.add(scc);
+
+                //These help keep track for the public methods above
                 components++;
 
                 if(S.size()>largest)
@@ -288,23 +343,27 @@ public class GraphProcessor {
      * @return The reverse of the edges in the graph
      */
     private void getGraphReverse(){
+        //make new hashMap called graphR
         graphR = new HashMap<>();
 
+        //Go through original graph
         for (Vertex v: graph.values()) {
 
+            //get each vertices edges
             ArrayList<String> vEdges = v.getEdges();
 
+            //for each edge e
             for (String e: vEdges) {
+                //if not in graphR, put it in
                 if(!graphR.containsKey(e.hashCode())){
-                    Vertex temp = new Vertex(e);
-                    graphR.put(e.hashCode(),temp);
+                    graphR.put(e.hashCode(),new Vertex(e));
                 }
-                //key1 v.getVertex().hashCode();
+                //now set the new vertices edge, which was the vertex in graph
                 graphR.get(e.hashCode()).setEdge(v.getVertex());
 
+                //that edge we just made isn't already in, then put it in
                 if(!graphR.containsKey(v.getVertex().hashCode())){
-                    Vertex vv = new Vertex(v.getVertex());
-                    graphR.put(v.getVertex().hashCode(),vv);
+                    graphR.put(v.getVertex().hashCode(), new Vertex(v.getVertex()));
                 }
             }
         }
