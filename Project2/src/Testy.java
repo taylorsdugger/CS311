@@ -3,13 +3,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by taylor on 3/31/17.
+ * Created by Taylor Dugger
  */
 public class Testy {
 
     public static void main(String args[]){
 
-        /*WikiCrawler w = new WikiCrawler("/wiki/bicycle",100,"WikiComS.txt");
+       WikiCrawler w = new WikiCrawler("/wiki/Computer_Science",25,"WikiCS.txt");
         w.crawl();
 
         String everything;
@@ -28,18 +28,20 @@ public class Testy {
         everything = sb.toString();
 
         ArrayList<String> aa = w.extractLinks(everything);
-        for (String a: aa) {
+        /*for (String a: aa) {
             System.out.println(a);
         }*/
 
 
-        GraphProcessor p = new GraphProcessor("/home/taylor/Programming/CS311/Project2/graphTest.txt");
+        GraphProcessor p = new GraphProcessor("/home/taylor/Programming/CS311/Project2/WikiCS.txt");
 
-        System.out.println(p.sameComponent("B", "A"));
+        //System.out.println(p.sameComponent("5", "9"));
 
-        ArrayList<String> a = p.componentVertices("A");
-        System.out.println(a.toString());
+        //ArrayList<String> a = p.componentVertices("8");
+        //System.out.println(a.toString());
 
-        //System.out.println(p.outDegree(null));
+        System.out.println((p.largestComponent()));
+
+        System.out.println(p.bfsPath("/wiki/Computer_Science","/wiki/Logic").toString());
     }
 }
